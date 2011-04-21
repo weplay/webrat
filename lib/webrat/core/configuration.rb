@@ -71,6 +71,9 @@ module Webrat
     # How many redirects to the same URL should be halted as an infinite redirect
     # loop? Defaults to 10
     attr_accessor :infinite_redirect_limit
+    
+    # Check responses for the presence of &lt; and fail if it is present
+    attr_accessor :fail_on_escaped_html
 
     # Print out the full HTML on wait failure
     # Defaults to false
@@ -84,6 +87,7 @@ module Webrat
       self.application_framework = :rails
       self.selenium_server_port = 4444
       self.infinite_redirect_limit = 10
+      self.fail_on_escaped_html = false
       self.selenium_browser_key = '*firefox'
       self.selenium_browser_startup_timeout = 5
       self.selenium_verbose_output = false

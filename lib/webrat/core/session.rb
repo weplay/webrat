@@ -121,6 +121,11 @@ For example:
       save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
 
+      if contains_escaped_html?
+        save_and_open_page 
+        raise PageLoadError.new("Page contained escaped HTML (Url: #{url})")
+      end
+
       reset
 
       @current_url  = url
@@ -133,6 +138,10 @@ For example:
       end
 
       return response
+    end
+    
+    def contains_escaped_html?
+      Webrat.configuration.fail_on_escaped_html && response_body =~ /\&lt\;/
     end
 
     def check_for_infinite_redirects
